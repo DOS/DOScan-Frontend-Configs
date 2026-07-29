@@ -1,0 +1,16 @@
+[
+  {
+    "title": "DATA Network",
+    "url": "https://www.datanetscan.io/",
+    "group": "Mainnets",
+    "icon": "https://raw.githubusercontent.com/blockscout/frontend-configs/main/configs/network-icons/datanet-light.svg",
+    "invertIconInDarkMode": true
+  },
+  {
+    "title": "DATA Network Aeneid",
+    "url": "https://aeneid.datanetscan.io",
+    "group": "Testnets",
+    "icon": "https://raw.githubusercontent.com/blockscout/frontend-configs/main/configs/network-icons/datanet-light.svg",
+    "invertIconInDarkMode": true
+  }
+]
