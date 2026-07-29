@@ -110,7 +110,7 @@
 		"title": "MetaDOS",
 		"logo": "https://raw.githubusercontent.com/DOSLabs/DOScan-Frontend-Configs/main/configs/marketplace-logos/metados.png",
 		"categories": [
-			"Gaming"
+			"Games"
 		],
 		"shortDescription": "Next-gen battle royale game using TIME-as-currency concept supporting up to 100 players.",
 		"description": "Next-gen battle royale game using TIME-as-currency concept supporting up to 100 players.",
@@ -129,7 +129,7 @@
 		"title": "Heroes & Empires",
 		"logo": "https://raw.githubusercontent.com/DOSLabs/DOScan-Frontend-Configs/main/configs/marketplace-logos/he.png",
 		"categories": [
-			"Gaming"
+			"Games"
 		],
 		"shortDescription": "Idle RPG combined with battle royale gameplay.",
 		"site": "https://heroesempires.com",
