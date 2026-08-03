@@ -1,0 +1,8 @@
+{
+  "chainId": 7979,
+  "address": "REPLACE_WITH_CHECKSUMMED_CONTRACT_ADDRESS",
+  "name": "REPLACE_WITH_TOKEN_NAME",
+  "symbol": "REPLACE_WITH_SYMBOL",
+  "decimals": 18,
+  "logoURI": "https://raw.githubusercontent.com/DOS/DOScan-Frontend-Configs/main/configs/token-icons/REPLACE_WITH_SYMBOL.svg"
+}
