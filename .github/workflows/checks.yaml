@@ -51,31 +51,12 @@ jobs:
             -d configs/token-lists/mainnet.json
           jq -e '
             (.tokens | length > 0) and
+            (([.tokens[].address | ascii_downcase] | unique | length) == (.tokens | length)) and
             ([.tokens[] |
               (.chainId == 7979) and
+              ((.address | ascii_downcase) != "0x0000000000000000000000000000000000000000") and
               (.logoURI | test("^https://raw\\.githubusercontent\\.com/DOS/DOScan-Frontend-Configs/main/configs/token-icons/[A-Za-z0-9._-]+\\.(svg|png)$"))
             ] | all)
           ' configs/token-lists/mainnet.json >/dev/null
-          icon_prefix="https://raw.githubusercontent.com/DOS/DOScan-Frontend-Configs/main/"
-          while IFS= read -r icon_url; do
-            icon_path="${icon_url#${icon_prefix}}"
-            test -s "${icon_path}"
-            if [[ "${icon_path}" == *.svg ]]; then
-              python3 - "${icon_path}" <<'PY'
-          import sys
-          import xml.etree.ElementTree as ET
-
-          root = ET.parse(sys.argv[1]).getroot()
-          for element in root.iter():
-              tag = element.tag.rsplit("}", 1)[-1].lower()
-              if tag == "script":
-                  raise SystemExit("SVG scripts are not allowed")
-              for attribute, value in element.attrib.items():
-                  name = attribute.rsplit("}", 1)[-1].lower()
-                  if name.startswith("on"):
-                      raise SystemExit("SVG event handlers are not allowed")
-                  if name == "href" and value and not value.startswith("#"):
-                      raise SystemExit("External SVG references are not allowed")
-          PY
-            fi
-          done < <(jq --raw-output ".tokens[].logoURI" configs/token-lists/mainnet.json)
+          python3 -m unittest discover -s tools/token-list-validator -p "test_*.py"
+          python3 tools/token-list-validator/validate_assets.py configs/token-lists/mainnet.json
