@@ -1,6 +1,8 @@
 import base64
+import math
 import tempfile
 import unittest
+import xml.etree.ElementTree as ET
 from pathlib import Path
 
 from validate_assets import validate_png, validate_svg
@@ -128,6 +130,31 @@ class TokenIconValidationTest(unittest.TestCase):
     def test_rejects_fake_png(self) -> None:
         with self.assertRaises(ValueError):
             validate_png(self.write("fake.png", b"not a png"))
+
+    def test_wdos_icon_has_safe_area_for_circular_crop(self) -> None:
+        icon_path = Path(__file__).parents[2] / "configs" / "token-icons" / "WDOS.svg"
+        view_box = tuple(
+            float(value)
+            for value in ET.parse(icon_path).getroot().attrib["viewBox"].split()
+        )
+        view_x, view_y, view_width, view_height = view_box
+        center_x = view_x + view_width / 2
+        center_y = view_y + view_height / 2
+        radius = min(view_width, view_height) / 2
+        production_slot_size = 30
+        minimum_clearance = view_width * 0.5 / production_slot_size
+        artwork_bounds = (0.0, 0.0, 5808.6, 5808.6)
+        artwork_x, artwork_y, artwork_width, artwork_height = artwork_bounds
+        artwork_bounding_corners = (
+            (artwork_x, artwork_y),
+            (artwork_x + artwork_width, artwork_y),
+            (artwork_x, artwork_y + artwork_height),
+            (artwork_x + artwork_width, artwork_y + artwork_height),
+        )
+
+        for point_x, point_y in artwork_bounding_corners:
+            distance_from_center = math.hypot(point_x - center_x, point_y - center_y)
+            self.assertLessEqual(distance_from_center, radius - minimum_clearance)
 
 
 if __name__ == "__main__":
